@@ -15,7 +15,7 @@ mailQueue.process(async (job) => {
   const { from, to } = job.data;
   console.log(`send email from id=${from} to id=${to}`);
   for (let id = from; id <= to; id++) {
-    await testTask(id);
+    await sendTestEmail(id);
     job.progress(id / (to - from + 1) * 100);
   }
 }).catch((e) => {

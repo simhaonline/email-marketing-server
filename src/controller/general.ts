@@ -137,8 +137,8 @@ export default class GeneralController {
   @request('get', '/api/addTestJob')
   public static async addTestJob(ctx: BaseContext) {
     try {
-      const from = ctx.query.from;
-      const to = ctx.query.to;
+      const from = +ctx.query.from;
+      const to = +ctx.query.to;
       mailQueue.add({ from, to });
       ctx.status = 200;
     } catch (e) {
