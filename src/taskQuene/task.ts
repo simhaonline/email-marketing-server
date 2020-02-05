@@ -5,15 +5,15 @@ import { mg } from '../mailgun';
 export async function testTask(id: number) {
   const email = await Email.findOneById(id);
   if (!email) {
-    sendLogger.info('sendTestMail', `ERROR: id ${id} not found`);
+    sendLogger.info('sendTestMail', { error: `ERROR: id ${id} not found` });
     return;
   }
   if (email.message_id) {
-    sendLogger.info('sendTestMail', `SKIP: id ${id} has been send.`);
+    sendLogger.info('sendTestMail', { error: `SKIP: id ${id} has been send.` });
     return;
   }
   console.log(email.id);
-  sendLogger.info('sendTestMail', JSON.stringify(email));
+  sendLogger.info('sendTestMail', { data: JSON.stringify(email) });
 }
 
 /** 发送不带参数的测试邮件 */
@@ -21,11 +21,11 @@ export async function sendTestEmail(id: number) {
   try {
     const email = await Email.findOneById(id);
     if (!email) {
-      sendLogger.info('sendTestMail', `ERROR: id ${id} not found`);
+      sendLogger.info('sendTestMail', { error: `ERROR: id ${id} not found` });
       return;
     }
     if (email.message_id) {
-      sendLogger.info('sendTestMail', `SKIP: id ${id} has been send.`);
+      sendLogger.info('sendTestMail', { error: `SKIP: id ${id} has been send.` });
       return;
     }
     const data = {
