@@ -137,7 +137,7 @@ export default class GeneralController {
   @request('get', '/api/addTestJob')
   public static async addTestJob(ctx: BaseContext) {
     try {
-      mailQueue.add({ from: 1, to: 5 });
+      mailQueue.add({ from: 1, to: 100 });
       ctx.status = 200;
     } catch (e) {
       ctx.status = 500;

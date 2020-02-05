@@ -3,7 +3,17 @@ import { sendLogger } from '../logging';
 import { mg } from '../mailgun';
 
 export async function testTask(id: number) {
-  console.log('id:', id);
+  const email = await Email.findOneById(id);
+  if (!email) {
+    sendLogger.info('sendTestMail', `ERROR: id ${id} not found`);
+    return;
+  }
+  if (email.message_id) {
+    sendLogger.info('sendTestMail', `SKIP: id ${id} has been send.`);
+    return;
+  }
+  console.log(email.id);
+  sendLogger.info('sendTestMail', JSON.stringify(email));
 }
 
 /** 发送不带参数的测试邮件 */
