@@ -7,7 +7,7 @@ import { sleep } from '../utils';
 export const mailQueue = new Bull('mail-queue', {
   limiter: {
     max: 1000,
-    duration: 1200000
+    duration: 5 * 60 * 1000
   }
 });
 
@@ -17,7 +17,7 @@ mailQueue.process(async (job) => {
   console.log(`send email from id=${from} to id=${to}`);
   for (let id = from; id <= to; id++) {
     await sendTestEmail(id);
-    await sleep(1000);
+    await sleep(2000);
     job.progress((id - from + 1) / (to - from + 1) * 100);
   }
 }).catch((e) => {
