@@ -18,7 +18,7 @@ mailQueue.process(async (job) => {
   for (let id = from; id <= to; id++) {
     await sendTestEmail(id);
     await sleep(200);
-    job.progress(id / (to - from + 1) * 100);
+    job.progress((id - from + 1) / (to - from + 1) * 100);
   }
 }).catch((e) => {
   sendLogger.info('mailQueue', e);
