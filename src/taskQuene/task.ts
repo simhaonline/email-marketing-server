@@ -40,8 +40,12 @@ export async function sendTestEmail(id: number) {
     mg.messages().send(data, (error, body) => {
       // '<xxx@mail.xxx>' => 'xxx@mail.xxx'
       email.message_id = body.id.slice(1, -1);
+      console.log(body);
       email.save();
       sendLogger.info('sendTestMail', { body, data, error });
+    }).catch((error) => {
+      console.log(error);
+      sendLogger.info('sendTestMail', { data, error });
     });
   } catch (e) {
     sendLogger.info('sendTestMail', { error: e });

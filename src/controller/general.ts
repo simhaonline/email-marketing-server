@@ -126,6 +126,9 @@ export default class GeneralController {
         email.message_id = body.id.slice(1, -1);
         email.save();
         sendLogger.info('sendTestMail', { body, data, error });
+      }).catch((error) => {
+        console.log(error);
+        sendLogger.info('sendTestMail', { data, error });
       });
       ctx.status = 200;
     } catch (e) {
