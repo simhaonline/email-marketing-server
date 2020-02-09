@@ -28,12 +28,17 @@ export async function sendTestEmail(id: number) {
       sendLogger.info('sendTestMail', { error: `SKIP: id ${id} has been send.` });
       return;
     }
+
+    // const tempVar = JSON.parse(email.template_variables);
+    const tempVar = {};
+    const X_Mailgun_Variables = JSON.stringify({ Timer: `https://${process.env.API_BASE}/api/timer/${email.id}.png`, ...tempVar });
     const data = {
       from: `${email.sender_name} <${email.send_address}>`,
       to: email.recv_address,
       subject: email.subject,
       template: 'ncov',
-      'v:id': email.id
+      'v:id': email.id,
+      'h:X-Mailgun-Variables': X_Mailgun_Variables
     };
 
     console.log('send email to: ', email.recv_address);
