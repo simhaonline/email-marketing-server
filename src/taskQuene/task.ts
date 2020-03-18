@@ -16,8 +16,8 @@ export async function testTask(id: number) {
   sendLogger.info('sendTestMail', { data: JSON.stringify(email) });
 }
 
-/** 发送不带参数的测试邮件 */
-export async function sendTestEmail(id: number) {
+/** 发送指定id邮件 */
+export async function sendEmail(id: number) {
   try {
     const email = await Email.findOneById(id);
     if (!email) {
@@ -29,14 +29,20 @@ export async function sendTestEmail(id: number) {
       return;
     }
 
-    // const tempVar = JSON.parse(email.template_variables);
-    const tempVar = {};
-    const X_Mailgun_Variables = JSON.stringify({ Timer: `https://${process.env.API_BASE}/api/timer/${email.id}.png`, ...tempVar });
+    const X_Mailgun_Variables = JSON.stringify({
+      Timer: `https://${process.env.API_BASE}/api/timer/${email.id}.png`,
+      Name: email.last_name,
+      FounderName: email.foundername,
+      Advantage2: email.advantage2,
+      University2: email.university2,
+      Website: email.website
+    });
+
     const data = {
       from: `${email.sender_name} <${email.send_address}>`,
       to: email.recv_address,
       subject: email.subject,
-      template: 'ncov',
+      template: email.template,
       'v:id': email.id,
       'h:X-Mailgun-Variables': X_Mailgun_Variables
     };

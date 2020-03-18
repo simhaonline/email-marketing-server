@@ -108,9 +108,14 @@ export default class GeneralController {
     try {
       const email = await Email.findOneById(1);
 
-      // const tempVar = JSON.parse(email.template_variables);
-
-      // const X_Mailgun_Variables = JSON.stringify({ Timer: `https://${process.env.API_BASE}/api/timer/${email.id}.png`, ...tempVar });
+      const X_Mailgun_Variables = JSON.stringify({
+        Timer: `https://${process.env.API_BASE}/api/timer/${email.id}.png`,
+        Name: email.last_name,
+        FounderName: email.foundername,
+        Advantage2: email.advantage2,
+        University2: email.university2,
+        Website: email.website
+      });
 
       const data = {
         from: `${email.sender_name} <${email.send_address}>`,
@@ -118,7 +123,7 @@ export default class GeneralController {
         subject: email.subject,
         template: email.template,
         'v:id': email.id,
-        // 'h:X-Mailgun-Variables': X_Mailgun_Variables
+        'h:X-Mailgun-Variables': X_Mailgun_Variables
       };
 
       mg.messages().send(data, (error, body) => {

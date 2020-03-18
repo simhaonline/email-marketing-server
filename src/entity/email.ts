@@ -162,6 +162,11 @@ export class Email extends BaseEntity {
   })
   university2: string;
 
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  template: string;
 
   static findOneById(id: number) {
     return this.createQueryBuilder('email')
