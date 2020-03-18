@@ -5,7 +5,7 @@ export class Email extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  /** mailgun 的 message_id eg: 20200126124420.1.0E1349A012A89BBC@mail.yezhang.me */
+  /** mailgun 的 message_id eg: 20200126124420.1.0E1349A012A89BBC@mail.xxx.com */
   @Index()
   @Column({
     type: 'varchar',
@@ -20,7 +20,29 @@ export class Email extends BaseEntity {
   })
   message: string;
 
-  /** 发信人姓名 */
+
+  /** 收件人性别 */
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  gender: string;
+
+  /** 收信人姓 */
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  first_name: string;
+
+  /** 收信人姓 */
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  last_name: string;
+
+  /** 发信人名 */
   @Column({
     type: 'varchar',
     nullable: true
@@ -47,20 +69,6 @@ export class Email extends BaseEntity {
     nullable: true
   })
   subject: string;
-
-  /** 邮件模板 */
-  @Column({
-    type: 'varchar',
-    nullable: true
-  })
-  template: string;
-
-  /** 模板变量 */
-  @Column({
-    type: 'text',
-    nullable: true
-  })
-  template_variables: string;
 
   /** 发送邮件时间 */
   @Column({
@@ -103,6 +111,57 @@ export class Email extends BaseEntity {
     nullable: true
   })
   user_type: string;
+
+  /** 唯一ID */
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  uniqueid: string;
+
+  @Column({
+    type: 'int',
+    nullable: true
+  })
+  assignedid: number;
+
+  /** 网站链接 */
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  website: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  foundername: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  advantage1: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  advantage2: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  university1: string;
+
+  @Column({
+    type: 'varchar',
+    nullable: true
+  })
+  university2: string;
+
 
   static findOneById(id: number) {
     return this.createQueryBuilder('email')
