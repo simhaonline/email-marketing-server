@@ -4,6 +4,7 @@ import { Email } from '../entity/email';
 import { mg } from '../mailgun';
 import { sendLogger, trackLogger } from '../logging';
 import { mailQueue } from '../taskQuene/quene';
+import { UserActivity } from '../entity/user-activity';
 
 @tagsAll(['General'])
 export default class GeneralController {
@@ -26,6 +27,14 @@ export default class GeneralController {
       email.user_type = 'opened';
       await email.save();
 
+      const userActivity = new UserActivity();
+      userActivity.time = new Date(eventData.timestamp * 1000);
+      userActivity.action_type = 'opened';
+      userActivity.send_address = email.send_address;
+      userActivity.recv_address = email.recv_address;
+      userActivity.uniqueid = email.uniqueid;
+      await userActivity.save();
+
       ctx.status = 200;
     } catch (e) {
       ctx.status = 500;
@@ -42,6 +51,14 @@ export default class GeneralController {
       email.click_time = new Date(eventData.timestamp * 1000);
       email.user_type = 'clicked';
       await email.save();
+
+      const userActivity = new UserActivity();
+      userActivity.time = new Date(eventData.timestamp * 1000);
+      userActivity.action_type = 'clicked';
+      userActivity.send_address = email.send_address;
+      userActivity.recv_address = email.recv_address;
+      userActivity.uniqueid = email.uniqueid;
+      await userActivity.save();
 
       ctx.status = 200;
     } catch (e) {

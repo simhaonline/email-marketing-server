@@ -4,6 +4,7 @@ import { BaseContext } from 'koa';
 import { sleep } from '../utils';
 import { Email } from '../entity/email';
 import { trackLogger } from '../logging';
+import { UserActivity } from 'src/entity/user-activity';
 
 const CHUNK_SIZE = +process.env.CHUNK_SIZE;
 export default class TimerController {
@@ -33,6 +34,14 @@ export default class TimerController {
           trackLogger.log('info', `stayTime: ${time}; id: ${id}`);
           email.stay_time = time;
           email.save();
+
+          const userActivity = new UserActivity();
+          userActivity.stay_time = time;
+          userActivity.action_type = 'clickTimer';
+          userActivity.send_address = email.send_address;
+          userActivity.recv_address = email.recv_address;
+          userActivity.uniqueid = email.uniqueid;
+          userActivity.save();
         }).catch((err) => {
           trackLogger.log('error', `stayTime: ${err}`);
         });
